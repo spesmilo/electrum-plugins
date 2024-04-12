@@ -1,0 +1,2 @@
+# electrum-plugins
+electrum plugins
