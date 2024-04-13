@@ -5,7 +5,7 @@ from PyQt5.QtGui import QFontMetrics
 
 from electrum.plugin import BasePlugin, hook
 from electrum.i18n import _
-
+from electrum.gui.qt.util import read_QIcon_from_bytes
 
 class Plugin(BasePlugin):
     vkb = None
@@ -13,7 +13,8 @@ class Plugin(BasePlugin):
 
     @hook
     def password_dialog(self, pw, grid, pos):
-        vkb_button = QPushButton("+")
+        vkb_button = QPushButton('')
+        vkb_button.setIcon(read_QIcon_from_bytes(self.read_file("keyboard-icon.svg")))
         font_height = QFontMetrics(vkb_button.font()).height()
         vkb_button.setFixedWidth(round(1.7 * font_height))
         vkb_button.clicked.connect(lambda: self.toggle_vkb(grid, pw))
