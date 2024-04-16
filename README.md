@@ -1,7 +1,7 @@
 This repository serves as an example for remote plugins.
 
 Remote plugins are plugins that can be downloaded from the Electrum GUI.
-They are listed hash in electrum/plugins.json
+They are listed in `electrum/plugins.json`
 
 
 The `contrib/make_plugin` script in the electrum repository creates a
