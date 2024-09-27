@@ -1,13 +1,15 @@
 {
-    "name": "virtualkeyboard",
-    "hash": "4ab551ec5226e7bb26e21991b33c75387e8de66bd9c5bc402e940e6f8a17050b",
-    "description": "Add an optional virtual keyboard to the password dialog.\nWarning: do not use this if it makes you pick a weaker password.",
-    "display_name": "Virtual Keyboard",
+    "author": "The Electrum developers",
     "available_for": [
         "qt"
     ],
+    "description": "Add an optional virtual keyboard to the password dialog.\nWarning: do not use this if it makes you pick a weaker password.",
+    "display_name": "Virtual Keyboard",
     "download_url": "https://raw.githubusercontent.com/spesmilo/electrum-plugins/master/virtualkeyboard-0.0.1.zip",
-    "author": "The Electrum developers",
+    "hash": "4ab551ec5226e7bb26e21991b33c75387e8de66bd9c5bc402e940e6f8a17050b",
     "licence": "MIT",
+    "name": "virtualkeyboard",
+    "pubkey": "021027fd5bc3b5e50c9800d48bc8acfbc290d89b857c7ce15572a57048c4c0558e",
+    "signature": "561b15202ac2af79a573b865ac505eea644e27b373a42b461757706227a377f8562d484f3386830cfb3b6c98694a28f30065d8043e096a86c8b90335cca91ffa",
     "version": "0.0.1"
 }
