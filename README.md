@@ -1,19 +1,31 @@
-This repository serves as an example for remote plugins.
+This repository serves as an example for external plugins.
 
-Remote plugins are plugins that can be downloaded from the Electrum GUI.
-They are listed in `electrum/plugins.json`
+# Adding a plugin to Electrum
+
+In order to add this plugin to Electrum, add the following line to /etc/electrum/plugin_authority:
+
+021027fd5bc3b5e50c9800d48bc8acfbc290d89b857c7ce15572a57048c4c0558e https://raw.githubusercontent.com/spesmilo/electrum-plugin-virtualkeyboard/refs/heads/master/virtualkeyboard.json
+
+The first element is a public key used to sign the plugin, the second one is a URL
 
 
-The `contrib/make_plugin` script in the electrum repository creates a
-zip file that can be distributed via https. Here is how to use it:
+# Development and testing
 
-First, call `./contrib/make_plugin /path/to/yourplugin`
+If you are developing an external plugin, you may create a symbolic
+link in your electrum/electrum/plugins directory, that links to the
+place where you where you forked this repository
 
-This will create a plugin file named `yourplugin-version.zip`, where `version` is set in `__init__.py` of the plugin.
-It will also update the hash and metadata of your plugin in `electrum/plugins.json`.
-This hash update is required by Electrum in order to import the plugin.
 
-In order to test changes to your plugin, you need to both move the zip file to your userspace and update the hash.
+# Publishing an external plugin
 
-It is best to perform both operations together:
-`./contrib/make_plugin /path/to/yourplugin && mv /path/to/yourplugin-*.zip ~/.electrum/plugins/`
+In order to publish an external plugin, fork this directory and use the `contrib/make_plugin` script in the electrum repository.
+
+ ./contrib/make_plugin <plugin_directory> <privkey> <download_url>
+
+
+It will create two files:
+ - a plugin file named `yourplugin-version.zip`, where `version` is set in `__init__.py` of the plugin.
+ - a json file named `yourplugin.json`
+
+Both files need to be uploaded on a webserver.
+In this example, we use the github source repository in order to distribute these files.
