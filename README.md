@@ -5,9 +5,12 @@ It contains code for a simple plugin that creates a virtual keyboard in the Qt G
 
 In order to add this plugin to Electrum, add the following line to /etc/electrum/trusted_plugins:
 
-`021027fd5bc3b5e50c9800d48bc8acfbc290d89b857c7ce15572a57048c4c0558e https://raw.githubusercontent.com/spesmilo/electrum-plugin-virtualkeyboard/refs/heads/master/virtualkeyboard.json`
+`https://raw.githubusercontent.com/spesmilo/electrum-plugin-virtualkeyboard/refs/heads/master/virtualkeyboard.json?pubkey=021027fd5bc3b5e50c9800d48bc8acfbc290d89b857c7ce15572a57048c4c0558e`
 
-The first element is the public key of the plugin autor, the second one is a URL where plugin metadata is available.
+This URL returns plugin the metadata.  The public key serves to verify
+the signature in the plugin metadata.  The public key must be part of
+the URL, so that it is saved in your `trusted_plugin` file, and cannot
+be changed if the webserver hosting the metadata is compromised.
 
 Once you have done that, you should see 'Virtual Keyboard' in your list of plugins.
 
