@@ -7,11 +7,9 @@ In order to add this plugin to Electrum, create a `/etc/electrum/trusted_plugins
 
 `021027fd5bc3b5e50c9800d48bc8acfbc290d89b857c7ce15572a57048c4c0558e:https://raw.githubusercontent.com/spesmilo/electrum-plugin-virtualkeyboard/refs/heads/master/virtualkeyboard.json`
 
-This URL returns plugin metadata signed by the plugin author. The
-public key in the URL serves to verify the signature. The pubkey must
-be part of the URL, so that it is saved in your `trusted_plugin` file,
-and cannot be changed if the server hosting the metadata is
-compromised.
+Each line in this file is a public key followed by a URL. The URL
+returns plugin metadata signed by the plugin author.  The public key
+is used to verify the signature.
 
 Once you have done that, you should see 'Virtual Keyboard' in your list of plugins.
 
