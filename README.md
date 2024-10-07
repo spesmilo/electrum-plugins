@@ -4,7 +4,7 @@ It contains code for a simple plugin that creates a virtual keyboard in the Qt G
 ## Adding an external plugin to Electrum
 
 In order to add this plugin to Electrum, add the zip file to your `/opt/electrum_plugins` directory.
-
+That directory and the file it contains must be owned by root, and they must not be user writeable.
 
 ## Development and testing
 
@@ -21,10 +21,4 @@ the `contrib/make_plugin` script in the electrum repository.
 
 `./contrib/make_plugin <plugin_directory>`
 
-
-It will create two files:
- - a plugin file named `yourplugin-version.zip`, where `version` is set in `__init__.py` of the plugin.
- - a json file named `yourplugin.json`
-
-Both files need to be uploaded on a webserver.
-In this example, we use the github source repository in order to distribute these files.
+It will create a plugin file named `yourplugin-version.zip`, where `version` is set in `__init__.py` of the plugin.
