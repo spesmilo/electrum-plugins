@@ -31,9 +31,9 @@ import json
 from PyQt6.QtCore import QObject, pyqtSignal
 from PyQt6.QtWidgets import QPushButton
 
-import aionostr
-
 import electrum_ecc as ecc
+import electrum_aionostr as aionostr
+
 from electrum.crypto import sha256
 from electrum import util
 from electrum.transaction import Transaction, PartialTransaction, tx_from_any, SerializationError
