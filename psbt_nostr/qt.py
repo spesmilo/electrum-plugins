@@ -33,6 +33,7 @@ from PyQt6.QtWidgets import QPushButton
 
 import electrum_ecc as ecc
 import electrum_aionostr as aionostr
+from electrum_aionostr.key import PrivateKey
 
 from electrum.crypto import sha256
 from electrum import util
@@ -117,15 +118,15 @@ class CosignerWallet(Logger):
         self.network = window.network
         self.config = self.wallet.config
         self.window = window
+
+        Logger.__init__(self)
         self.known_events = wallet.db.get_dict('cosigner_events')
         for k, v in list(self.known_events.items()):
             if v < now() - self.KEEP_DELAY:
                 self.logger.info(f'deleting old event {k}')
                 self.known_events.pop(k)
-
-        self.relays = [self.config.get('nostr_relay', 'wss://relay.damus.io')]
-
-        Logger.__init__(self)
+        self.relays = self.config.get('nostr_relays', 'wss://relay.damus.io,wss://nostr.mom').split(',')
+        self.logger.info(f'relays {self.relays}')
         self.obj = QReceiveSignalObject()
         self.obj.cosigner_receive_signal.connect(self.on_receive)
 
@@ -163,38 +164,38 @@ class CosignerWallet(Logger):
     @log_exceptions
     async def send_direct_messages(self, messages):
         for pubkey, msg in messages:
-            await aionostr.add_event(
+            eid = await aionostr.add_event(
                 self.relays,
                 kind=NOSTR_DM,
                 content=msg,
                 direct_message=pubkey,
                 private_key=self.nostr_privkey)
-            self.logger.info(f'message sent to {pubkey}')
+            self.logger.info(f'message sent to {pubkey}: {eid}')
 
+    @log_exceptions
     async def check_direct_messages(self):
-        queue = await aionostr.get_anything(
-            {"kinds": [NOSTR_DM], "limit":1, "#p": [self.nostr_pubkey]},
-            relays=self.relays,
-            stream=True
-        )
-        while True:
-            event = await queue.get()
-            if event.id in self.known_events:
-                continue
-            if event.created_at > now() + self.KEEP_DELAY:
-                # might be mallicious
-                continue
-            if event.created_at < now() - self.KEEP_DELAY:
-                continue
-            self.known_events[event.id] = now()
-            privkey = aionostr.key.PrivateKey(bytes.fromhex(self.nostr_privkey))
-            try:
-                content = privkey.decrypt_message(event.content, event.pubkey)
-            except:
-                self.logger.info(f'could not decrypt message {event.pubkey}')
-                continue
-            self.logger.info(f"received message from {event.pubkey}")
-            self.obj.cosigner_receive_signal.emit(event.pubkey, content)
+        privkey = PrivateKey(bytes.fromhex(self.nostr_privkey))
+        async with aionostr.Manager(self.relays, private_key=self.nostr_privkey) as manager:
+            await manager.connect()
+            query = {"kinds": [NOSTR_DM], "limit":100, "#p": [self.nostr_pubkey]}
+            async for event in manager.get_events(query, single_event=False, only_stored=False):
+                if event.id in self.known_events:
+                    self.logger.info(f'known event {event.id} {util.age(event.created_at)}')
+                    continue
+                self.logger.info(f'new event {event.id}')
+                if event.created_at > now() + self.KEEP_DELAY:
+                    # might be malicious
+                    continue
+                if event.created_at < now() - self.KEEP_DELAY:
+                    continue
+                self.known_events[event.id] = now()
+                try:
+                    content = privkey.decrypt_message(event.content, event.pubkey)
+                except:
+                    self.logger.info(f'could not decrypt message {event.pubkey}')
+                    continue
+                self.logger.info(f"received message from {event.pubkey}")
+                self.obj.cosigner_receive_signal.emit(event.pubkey, content)
 
     def diagnostic_name(self):
         return self.wallet.diagnostic_name()
