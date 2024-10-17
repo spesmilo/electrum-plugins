@@ -6,6 +6,13 @@ It contains code for a simple plugin that creates a virtual keyboard in the Qt G
 In order to add this plugin to Electrum, add the zip file to your `/opt/electrum_plugins` directory.
 That directory and the file it contains must be owned by root, and they must not be user writeable.
 
+Example:
+```
+  sudo mkdir -p /opt/electrum_plugins
+  sudo cp *.zip /opt/electrum_plugins
+  sudo chown root:root /opt/electrum_plugins/*
+```
+
 ## Development and testing
 
 If you are developing an external plugin, you may fork this directory,
