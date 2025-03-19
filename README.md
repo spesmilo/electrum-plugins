@@ -28,4 +28,4 @@ the `contrib/make_plugin` script in the electrum repository.
 
 `./contrib/make_plugin <plugin_directory>`
 
-It will create a plugin file named `yourplugin-version.zip`, where `version` is set in `__init__.py` of the plugin.
+It will create a plugin file named `yourplugin-version.zip`, where `version` is set in `manifest.json` of the plugin.
