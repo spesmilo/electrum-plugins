@@ -1,4 +1,5 @@
 {
+	"name": "virtualkeyboard",
 	"fullname": "Virtual Keyboard",
 	"description": "Add an optional virtual keyboard to the password dialog.\nWarning: do not use this if it makes you pick a weaker password.",
 	"available_for": ["qt"],
