@@ -10,23 +10,32 @@ the `contrib/make_plugin` script in the electrum repository.
 
 It will create a plugin file named `yourplugin-version.zip`, where `version` is set in `manifest.json` of the plugin.
 
-This file needs to be added to you the plugins directory of your electrum installation.
+## The manifest.json file
+
+The file contains the following fields:
+
+ - name: The plugin internal name. Electrum will install only one plugin per name.
+ - fullname: User visible name, shown in GUI
+ - description: User visible description
+ - available_for: List of GUIs for which the plugin is available.
+ - author: The plugin author
+ - license: The licence.
+ - version: The version of the plugin. It is added to the zipfile name.
+ - min_electrum_version (optional): Minimum supported version of Electrum
+ - max_electrum_version (optional): Max supported version of Electrum
 
 
-## External directory plugin
+## Installing a zipfile plugin
 
-If you are running an Electrum binary (Appimage, MacOS), you will not
-have access to your plugins directory. In that case, you may create a
-`/opt/electrum_plugins` directory on your system. That directory and
-the file it contains must be owned by root, and they must not be user
-writeable.
+The plugin zipfile needs to be added the `plugins` directory of your electrum directory.
 
-Example:
-```
-  sudo mkdir -p /opt/electrum_plugins
-  sudo cp *.zip /opt/electrum_plugins
-  sudo chown root:root /opt/electrum_plugins/*
-```
+On Linux:
+
+`cp myplugin.zip ~/lelectrum/plugins/myplugin.zip`
+
+
+The GUI will prompt the user for a plugin authorization password.
+
 
 ## Development and testing
 
